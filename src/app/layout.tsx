@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import '@/styles/globals.css'
 import { Site } from '@/constants/site'
-import ThemeProvoder from '@/components/providers/theme'
+import ThemeProvider from '@/components/providers/theme'
 
 const font = Inter({ subsets: ['latin', 'vietnamese'] })
 
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
 	}
 }
 
-export default function RootLayout({
+export default async function RootLayout({
 	children
 }: Readonly<{
 	children: React.ReactNode
@@ -38,9 +38,9 @@ export default function RootLayout({
 			lang='en'
 			suppressHydrationWarning
 		>
-			<ThemeProvoder>
+			<ThemeProvider>
 				<body className={font.className}>{children}</body>
-			</ThemeProvoder>
+			</ThemeProvider>
 		</html>
 	)
 }
