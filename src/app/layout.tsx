@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google'
 import '@/styles/globals.css'
 import { Site } from '@/constants/site'
 import ThemeProvider from '@/components/providers/theme'
+import { SessionProvider } from 'next-auth/react'
+import { auth } from '@/lib/auth'
 
 const font = Inter({ subsets: ['latin', 'vietnamese'] })
 
@@ -33,14 +35,18 @@ export default async function RootLayout({
 }: Readonly<{
 	children: React.ReactNode
 }>) {
+	const session = await auth()
+
 	return (
-		<html
-			lang='en'
-			suppressHydrationWarning
-		>
-			<ThemeProvider>
-				<body className={font.className}>{children}</body>
-			</ThemeProvider>
-		</html>
+		<SessionProvider session={session}>
+			<html
+				lang='en'
+				suppressHydrationWarning
+			>
+				<ThemeProvider>
+					<body className={font.className}>{children}</body>
+				</ThemeProvider>
+			</html>
+		</SessionProvider>
 	)
 }

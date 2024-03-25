@@ -13,15 +13,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum WorkspaceType {
+enum WORKSPACE_TYPE {
   PRIVATE
   COLLAB
 }
 
-enum FolderType {
+enum FOLDER_TYPE {
   JUST_OWNER
   SHARE
   PUBLIC
+}
+
+enum ENTITY_TYPE {
+  FOLDER
+  DOCUMENT
+  IMAGE
+}
+
+enum ACTION {
+  CREATE
+  UPDATE
+  DELETE
 }
 
 model User {
@@ -39,6 +51,8 @@ model User {
 
   memberOfWorkspaceIds String[]    @db.ObjectId
   memberOfWorkspace    Workspace[] @relation("member_of", fields: [memberOfWorkspaceIds], references: [id])
+
+  auditLogs AuditLog[]
 }
 
 model Account {
@@ -96,27 +110,28 @@ model TwoFactorComfirmation {
 }
 
 model Workspace {
-  id        String        @id @default(auto()) @map("_id") @db.ObjectId
+  id        String         @id @default(auto()) @map("_id") @db.ObjectId
   name      String
-  ownerId   String        @db.ObjectId
-  memberIds String[]      @db.ObjectId
+  ownerId   String         @db.ObjectId
+  memberIds String[]       @db.ObjectId
   avatar    String
-  type      WorkspaceType @default(PRIVATE)
+  type      WORKSPACE_TYPE @default(PRIVATE)
 
   owner   User   @relation("owner_by", fields: [ownerId], references: [id], onDelete: Cascade)
   members User[] @relation("member_of", fields: [memberIds], references: [id])
 
-  folder Folder[]
+  folder    Folder[]
+  auditLogs AuditLog[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Folder {
-  id   String     @id @default(auto()) @map("_id") @db.ObjectId
+  id   String      @id @default(auto()) @map("_id") @db.ObjectId
   name String
-  icon String     @db.String
-  type FolderType @default(PUBLIC)
+  icon String      @db.String
+  type FOLDER_TYPE @default(PUBLIC)
 
   workspaceId String    @db.ObjectId
   workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
@@ -151,4 +166,20 @@ model Image {
 
   createdAt DateTime @default(now())
   updatedAr DateTime @updatedAt
+}
+
+model AuditLog {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  workspaceId String @db.ObjectId
+  userId      String @db.ObjectId
+
+  entityType ENTITY_TYPE @default(DOCUMENT)
+  action     ACTION      @default(CREATE)
+  name       String
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
