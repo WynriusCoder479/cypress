@@ -1,4 +1,4 @@
-import argon2 from 'argon2'
+import bcryptjs from 'bcryptjs'
 import { NextAuthConfig } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
@@ -29,7 +29,10 @@ export default {
 
 					if (!user || !user.password) return null
 
-					const verifiedPassword = await argon2.verify(user.password, password)
+					const verifiedPassword = await bcryptjs.compare(
+						password,
+						user.password
+					)
 
 					if (verifiedPassword) return user
 				}

@@ -1,3 +1,4 @@
+import Navbar from '@/components/global/navbar'
 import { Metadata } from 'next'
 import { ReactNode } from 'react'
 
@@ -10,7 +11,12 @@ export const metadata = {
 } satisfies Metadata
 
 const MarketingLayout = ({ children }: MarketingLayoutProps) => {
-	return <div>{children}</div>
+	return (
+		<>
+			<Navbar />
+			<div className='container '>{children}</div>
+		</>
+	)
 }
 
 export default MarketingLayout
