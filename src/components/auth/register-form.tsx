@@ -30,6 +30,8 @@ const RegisterForm = () => {
 	const { isPending, mutate: registerMutate } = useMutation({
 		mutationFn: async (values: RegisterSchemaType) => await register(values),
 		onSuccess: data => {
+			form.reset()
+
 			if (data.error) {
 				setError(data.error)
 				return
@@ -81,7 +83,7 @@ const RegisterForm = () => {
 							name='password'
 							placeholder='******'
 							label='Password'
-							type='email'
+							type='password'
 							formMessage
 							disabled={isPending}
 							className='bg-transparent focus:bg-secondary'

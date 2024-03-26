@@ -41,6 +41,8 @@ const LoginForm = () => {
 		mutationFn: async (values: LoginSchemaType) =>
 			await login(values, callbackUrl),
 		onSuccess: data => {
+			console.log(data)
+
 			if (data?.error) {
 				form.reset()
 				setError(data.error)
@@ -66,7 +68,10 @@ const LoginForm = () => {
 		>
 			<Form {...form}>
 				<form
-					onSubmit={form.handleSubmit(values => loginMutate(values))}
+					onSubmit={form.handleSubmit(values => {
+						console.log(values)
+						loginMutate(values)
+					})}
 					className='space-y-6'
 				>
 					<div className='space-y-4'>
@@ -99,7 +104,7 @@ const LoginForm = () => {
 									name='password'
 									placeholder='******'
 									label='Password'
-									type='email'
+									type='password'
 									formMessage
 									disabled={isPending}
 									className='bg-transparent focus:bg-secondary'

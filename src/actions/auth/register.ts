@@ -18,7 +18,7 @@ export const register = async (values: RegisterSchemaType) => {
 
 	const { email, password, name } = validatedFields.data
 
-	const hashedPassword = await bcrypt.hash(password, process.env.BCRYPT_SALT!)
+	const hashedPassword = await bcrypt.hash(password, 10)
 
 	const existingUser = await getUserByEmail(email)
 
