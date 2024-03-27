@@ -12,7 +12,7 @@ const Heading = async () => {
 	return (
 		<div className='max-w-3xl space-y-8 pt-10'>
 			<h1 className={cn('text-3xl font-bold', 'md:text-6xl', 'sm:text-5xl')}>
-				Your Ideas, Documents, & Plans. Unified. Welcomr to{' '}
+				Your Ideas, Documents, & Plans. Unified. Welcome to{' '}
 				<span className='text-primary underline underline-offset-2'>
 					Cypress
 				</span>

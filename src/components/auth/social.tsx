@@ -4,9 +4,9 @@ import { Button } from '@/components/ui/button'
 import { FcGoogle } from 'react-icons/fc'
 import { FaGithub } from 'react-icons/fa'
 import { LuArrowRight } from 'react-icons/lu'
-import { signIn } from 'next-auth/react'
 import { useSearchParams } from 'next/navigation'
 import { DEFAULT_LOGIN_REDIRECT } from '@/constants/routes'
+import { signIn } from '@/lib/auth'
 
 const Social = () => {
 	const searchParams = useSearchParams()
