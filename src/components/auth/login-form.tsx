@@ -41,8 +41,6 @@ const LoginForm = () => {
 		mutationFn: async (values: LoginSchemaType) =>
 			await login(values, callbackUrl),
 		onSuccess: data => {
-			console.log(data)
-
 			if (data?.error) {
 				form.reset()
 				setError(data.error)
@@ -53,7 +51,10 @@ const LoginForm = () => {
 				setSuccess(data.success)
 			}
 
-			if (data?.twoFactor) setShowTwoFactor(true)
+			if (data?.twoFactor) {
+				setSuccess('Check your email to get 2FA code!')
+				setShowTwoFactor(true)
+			}
 		},
 		onError: () => setError('Something went wrong')
 	})
